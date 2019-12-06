@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
    db:
-     image: mysql:latest
+     image: mysql:5.7
      volumes:
        - db_data:/var/lib/mysql
      restart: always
@@ -28,5 +28,20 @@ services:
      volumes:
        - ./wp:/var/www/html # git管理外
        - ./tmp:/tmp # git管理外
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - db
+    ports:
+      - "9090:80"
+    environment:
+      PMA_ARBIRTRARY: 1
+      PMA_HOST: db:3306
+      PMA_USER: root
+      PMA_PASSWORD: somewordpress
+    volumes:
+      - /sessions
+
 volumes:
     db_data: {}
